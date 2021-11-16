@@ -3,7 +3,7 @@ package com.guilhermeoscp.apisistemaescolar;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication //@Configuration @EnableAutoConfiguration @ComponentScan
+@SpringBootApplication //Inclui as Anotações @Configuration @EnableAutoConfiguration @ComponentScan
 public class ApiSistemaEscolarApplication {
 
 	public static void main(String[] args) {
