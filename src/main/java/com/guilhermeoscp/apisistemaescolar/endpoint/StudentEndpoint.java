@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.guilhermeoscp.apisistemaescolar.error.CustomErrorType;
+import com.guilhermeoscp.apisistemaescolar.error.ResourceNotFoundException;
 import com.guilhermeoscp.apisistemaescolar.model.Student;
 import com.guilhermeoscp.apisistemaescolar.repository.StudentRepository;
 
@@ -36,13 +36,9 @@ public class StudentEndpoint {
 	
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<?> getStudentById (@PathVariable("id") long id) {
+		verifyIfStudentExists(id);
 		Optional<Student> student = studentDAO.findById(id);
-		if(student == null) {
-			return new ResponseEntity<>(new CustomErrorType("Student not found"), HttpStatus.NOT_FOUND);
-		}
-		else {
-			return new ResponseEntity<>(student, HttpStatus.OK);
-		}
+		return new ResponseEntity<>(student, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/findByName/{name}")
@@ -57,13 +53,21 @@ public class StudentEndpoint {
 	
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
+		verifyIfStudentExists(id);
 		studentDAO.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PutMapping
 	public ResponseEntity<?> update(@RequestBody Student student) {
+		verifyIfStudentExists(student.getId());
 		studentDAO.save(student);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	// Metodo Para Tratativa de Erro ao Não Encontrar um Estudante	
+	private void verifyIfStudentExists(Long id){
+        if(!studentDAO.findById(id).isPresent())
+            throw new ResourceNotFoundException("Student not found for ID: " + id);
+    }
 }
