@@ -21,8 +21,7 @@ public class RestExceptionHandler {
 				.title("Resource not Found")
 				.detail(rfnException.getMessage())
 				.developerMessage(rfnException.getClass().getName())
-				.build();
+				.builder();
 		return new ResponseEntity<>(rfnDetails, HttpStatus.NOT_FOUND);		
 	}
-
 }

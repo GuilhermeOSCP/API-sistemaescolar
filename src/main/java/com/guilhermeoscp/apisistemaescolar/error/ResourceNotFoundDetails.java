@@ -82,7 +82,7 @@ public class ResourceNotFoundDetails {
 			return this;
 		}
 
-		public ResourceNotFoundDetails build() {
+		public ResourceNotFoundDetails builder() {
 			ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
 			resourceNotFoundDetails.developerMessage = this.developerMessage;
 			resourceNotFoundDetails.title = this.title;
