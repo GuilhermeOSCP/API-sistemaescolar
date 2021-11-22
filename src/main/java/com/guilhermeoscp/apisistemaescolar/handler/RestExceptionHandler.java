@@ -1,14 +1,19 @@
 package com.guilhermeoscp.apisistemaescolar.handler;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.guilhermeoscp.apisistemaescolar.error.ResourceNotFoundDetails;
 import com.guilhermeoscp.apisistemaescolar.error.ResourceNotFoundException;
+import com.guilhermeoscp.apisistemaescolar.error.ValidationErrorDetails;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -23,5 +28,24 @@ public class RestExceptionHandler {
 				.developerMessage(rfnException.getClass().getName())
 				.builder();
 		return new ResponseEntity<>(rfnDetails, HttpStatus.NOT_FOUND);		
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException manvException) {
+		
+		List<FieldError> fieldErrors = manvException.getBindingResult().getFieldErrors();
+		String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(","));
+		String fieldMessages = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(","));
+		ValidationErrorDetails rfnDetails = ValidationErrorDetails.Builder
+				.newBuilder()
+				.timestamp(new Date().getTime())
+				.status(HttpStatus.BAD_REQUEST.value())
+				.title("Field Validation Error")
+				.detail("The arguments entered are invalid")
+				.developerMessage(manvException.getClass().getName())
+				.field(fields)
+				.fieldMessage(fieldMessages)
+				.builder();
+		return new ResponseEntity<>(rfnDetails, HttpStatus.BAD_REQUEST);		
 	}
 }

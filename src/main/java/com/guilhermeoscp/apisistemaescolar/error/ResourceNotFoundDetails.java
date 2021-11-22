@@ -2,45 +2,8 @@ package com.guilhermeoscp.apisistemaescolar.error;
 
 import javax.annotation.Generated;
 
-public class ResourceNotFoundDetails {
-	private String title;
-	private int status;
-	private String detail;
-	private long timestamp;
-	private String developerMessage;
-
-	private ResourceNotFoundDetails() {
-	}
+public class ResourceNotFoundDetails extends ErrorDetail{
 	
-	public String getTitle() {
-		return title;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public long getTimestamp() {
-		return timestamp;
-	}
-
-	public String getDeveloperMessage() {
-		return developerMessage;
-	}
-	
-	@Generated("SparkTools")
-	private ResourceNotFoundDetails(Builder builder) {
-		this.title = builder.title;
-		this.status = builder.status;
-		this.detail = builder.detail;
-		this.timestamp = builder.timestamp;
-		this.developerMessage = builder.developerMessage;
-	}
-
 	@Generated("SparkTools")
 	public static final class Builder {
 		private String title;
@@ -84,11 +47,11 @@ public class ResourceNotFoundDetails {
 
 		public ResourceNotFoundDetails builder() {
 			ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
-			resourceNotFoundDetails.developerMessage = this.developerMessage;
-			resourceNotFoundDetails.title = this.title;
-			resourceNotFoundDetails.detail = this.detail;
-			resourceNotFoundDetails.timestamp = this.timestamp;
-			resourceNotFoundDetails.status = this.status;
+			resourceNotFoundDetails.setDeveloperMessage(developerMessage);
+			resourceNotFoundDetails.setTitle(title); 
+			resourceNotFoundDetails.setDetail(detail); 
+			resourceNotFoundDetails.setTimestamp(timestamp); 
+			resourceNotFoundDetails.setStatus(status);
 			return resourceNotFoundDetails;
 		}
 	}	
