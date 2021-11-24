@@ -2,7 +2,7 @@ package com.guilhermeoscp.apisistemaescolar.error;
 
 import javax.annotation.Generated;
 
-public class ResourceNotFoundDetails extends ErrorDetail{
+public class ResourceNotFoundDetails extends ErrorDetails{
 	
 	@Generated("SparkTools")
 	public static final class Builder {
