@@ -61,7 +61,7 @@ public class StudentEndpoint {
 	}
 	
 	@DeleteMapping(path = "admin/students/{id}")
-//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		verifyIfStudentExists(id);
 		studentDAO.deleteById(id);
