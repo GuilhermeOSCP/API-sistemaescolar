@@ -6,11 +6,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.guilhermeoscp.apisistemaescolar.service.CustomUserDetailService;
 
 // As linhas que estão comentadas são para obter os usuários através do MySQL
 @EnableWebSecurity
@@ -26,7 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.anyRequest().authenticated()
+				.antMatchers("/*/protected/**").hasRole("USER")
+				.antMatchers("/*/admin/**").hasRole("ADMIN")
 				.and()
 				.httpBasic()
 				.and()
