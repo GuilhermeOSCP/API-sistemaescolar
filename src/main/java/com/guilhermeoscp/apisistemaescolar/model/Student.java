@@ -24,6 +24,14 @@ public class Student extends AbstractEntity {
 		this.name = name;
 		this.email = email;
 	}
+		
+	public Student(long id, @NotEmpty(message = "The student name field is mandatory") String name,
+			@NotEmpty @Email(message = "Enter a valid email") String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+	}
 
 	public String getName() {
 		return name;
