@@ -39,6 +39,7 @@ public class StudentEndpointTest {
 	@MockBean
 	private StudentRepository studentRepository;
 	
+	@SuppressWarnings("unused")
 	@Autowired
 	private MockMvc mockMvc;
 	
