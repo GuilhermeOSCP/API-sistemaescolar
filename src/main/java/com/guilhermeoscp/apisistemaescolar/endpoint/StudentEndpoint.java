@@ -24,8 +24,11 @@ import com.guilhermeoscp.apisistemaescolar.error.ResourceNotFoundException;
 import com.guilhermeoscp.apisistemaescolar.model.Student;
 import com.guilhermeoscp.apisistemaescolar.repository.StudentRepository;
 
+import io.swagger.annotations.*;
+
 @RestController
 @RequestMapping("v1")
+@Api("API REST Student")
 public class StudentEndpoint {
 	
 	private final StudentRepository studentDAO;
@@ -36,11 +39,23 @@ public class StudentEndpoint {
 	}
 	
 	@GetMapping(path = "protected/students/")
+	@ApiOperation(value = "Return a list with all students", response = Student[].class)
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                value = "Results page you want to retrieve (0..N)"),
+        @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                value = "Number of records per page."),
+        @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                value = "Sorting criteria in the format: property(asc|desc). " +
+                        "Default sort order is ascending. " +
+                        "Multiple sort criteria are supported.")
+})
 	public ResponseEntity<?> listAll (Pageable pageable) {
 		return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "protected/students/{id}")
+	@ApiOperation(value = "Return student by given id", response = Student.class)
 	public ResponseEntity<?> getStudentById (@PathVariable("id") long id, Authentication authentication) {
 		System.out.println(authentication);
 		verifyIfStudentExists(id);
@@ -49,11 +64,13 @@ public class StudentEndpoint {
 	}
 	
 	@GetMapping(path = "protected/students/findByName/{name}")
+	@ApiOperation(value = "Return student by given id", response = Student.class)
 	public ResponseEntity<?> findStudentsByName(@PathVariable String name) {
 		return new ResponseEntity<>(studentDAO.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "admin/students/")
+	@ApiOperation(value = "Save given student", response = Student.class, produces="application/json", consumes="application/json")
 	@Transactional(rollbackFor = Exception.class)
 	public ResponseEntity<?> save(@Valid @RequestBody Student student) {		
 		return new ResponseEntity<>(studentDAO.save(student),HttpStatus.CREATED);
